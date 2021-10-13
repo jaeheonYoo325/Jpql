@@ -10,6 +10,8 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import com.jpql.Jpql.domain.Member;
+import com.jpql.Jpql.domain.MemberDto;
+import com.jpql.Jpql.domain.Team;
 
 public class JpqlMain {
 
@@ -29,10 +31,12 @@ public class JpqlMain {
 			member.setAge(10);
 			em.persist(member);
 			
-			TypedQuery<Member> query = em.createQuery("select m from Member m where m.username = :username", Member.class);
-			query.setParameter("username", "member1");
-			Member singleResult = query.getSingleResult();
-			System.out.println("singleResult = " + singleResult.getUsername());
+			List<MemberDto> result = em.createQuery("select new com.jpql.Jpql.domain.MemberDto(m.username, m.age) from Member m", MemberDto.class)
+					.getResultList();
+			
+			MemberDto memberDto = result.get(0);
+			System.out.println("memberDto = " + memberDto.getUsername());
+			System.out.println("memberDto = " + memberDto.getAge());
 			
 			tx.commit();
 		} catch (Exception e) {
