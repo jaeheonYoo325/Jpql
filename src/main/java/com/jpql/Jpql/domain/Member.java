@@ -1,6 +1,8 @@
 package com.jpql.Jpql.domain;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -20,6 +22,9 @@ public class Member {
 	@JoinColumn(name = "TEAM_ID")
 	private Team team;
 
+	@Enumerated(EnumType.STRING)
+	private MemberType type;
+	
 	public void changeTeam(Team team) {
 		this.team = team;
 		team.getMembers().add(this);
